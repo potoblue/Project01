@@ -7,6 +7,9 @@ import folium
 
 total_df = pd.read_csv("station_total_utf8.csv")
 senior_df = pd.read_csv("senior_total_utf8.csv")
+senior_care_df = pd.read_csv("senior_care_utf8.csv")
+
+
 
 
 # ------------------
@@ -15,5 +18,7 @@ print(total_df.head())
 print(total_df.columns)
 print(senior_df.head())
 print(senior_df.columns)
+print(senior_care_df.head())
+print(senior_care_df.columns)
 # ------------------
 
