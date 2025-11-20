@@ -10,7 +10,10 @@ senior_df = pd.read_csv("senior_total_utf8.csv")
 senior_care_df = pd.read_csv("senior_care_utf8.csv")
 
 
-
+# 역별 승하차인원           => total_df
+# 65세 노인 승하차인원      => senior_df
+# 노인요양시설(요양원)      => senior_care_df
+#
 
 # ------------------
 # 확인용
