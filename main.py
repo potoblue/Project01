@@ -6,8 +6,8 @@ import seaborn as sns
 import folium
 import platform
 
-plt.rcParams['font.family'] = 'Malgun Gothic'  # 공백 제거
-plt.rcParams['axes.unicode_minus'] = False     # 공백 제거
+plt.rcParams['font.family'] = 'Malgun Gothic'  
+plt.rcParams['axes.unicode_minus'] = False     
 
 
 total_df = pd.read_csv("station_total_utf8.csv")
@@ -49,7 +49,7 @@ def get_line_number(station_id):
     if sid.startswith('28'): return '8호선'
     return '기타'
 
-senior_df['호선'] = senior_df['역번호'].apply(get_line_number)
+senior_df['호선'] = senior_df['역번호'].apply(get_line_number) # 역번호를 get line number함수에 적용하여 새로운 컬럼값인 호선을 저장
 
 # 3. 시간대 컬럼 정의 및 일일 총 승객수 계산
 time_cols = [
@@ -60,8 +60,11 @@ time_cols = [
 ]
 
 # 데이터 정제: 숫자형으로 변환 (NaN 또는 이상 값 0 처리)
-for col in time_cols:
-    senior_df[col] = pd.to_numeric(senior_df[col], errors='coerce').fillna(0)
+"""for col in time_cols:
+    senior_df[col] = pd.to_numeric(senior_df[col], errors='coerce').fillna(0)"""
+senior_df[time_cols] = senior_df[time_cols].apply(pd.to_numeric, errors='coerce').fillna(0) 
+# 데이터가 숫자형이 아닌 문자열로 되어 있을 가능성 때문에 안전상의 이유로 숫자형으로 변환, errors= coerce는 숫자열로 변환 불가 시 NaN으로 처리
+                                                                                  # 그 후 fillna(0)을 통해 NaN의 값을 0으로 처리
 
 # '일일총승객수' 새 컬럼 생성 (가로 합산)
 senior_df['일일총승객수'] = senior_df[time_cols].sum(axis=1)
@@ -73,8 +76,6 @@ senior_df = senior_df[senior_df['호선'].isin(target_lines)]
 
 # [핵심] 호선별 + 승하차구분별 평균 계산
 result_df = senior_df.groupby(['호선', '승하차구분'])['일일총승객수'].mean().reset_index()
-
-print(result_df)
 
 # -------------------------------------------------------
 # 5. 시각화 (Grouped Bar Plot)
