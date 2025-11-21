@@ -10,23 +10,29 @@ plt.rcParams['font.family'] = 'Malgun Gothic'
 plt.rcParams['axes.unicode_minus'] = False     
 
 
-total_df = pd.read_csv("station_total_utf8.csv")
-senior_df = pd.read_csv("senior_total_utf8.csv")
-senior_care_df = pd.read_csv("senior_care_utf8.csv")
-sme_df = pd.read_csv("sme.csv")
-park_df = pd.read_csv("TB_PTP_PRK_M.csv")
+total22_df = pd.read_csv("전연령22_utf8.csv", low_memory=False)
+senior22_df = pd.read_csv("노인승하차22_utf8.csv", low_memory=False)
+total24_df = pd.read_csv("전연령24_utf8.csv", low_memory=False)
+senior24_df = pd.read_csv("노인승하차24_utf8.csv", low_memory=False)
+senior_care_df = pd.read_csv("senior_care_utf8.csv", low_memory=False)
+sme_df = pd.read_csv("sme.csv", low_memory=False)
+park_df = pd.read_csv("TB_PTP_PRK_M.csv", low_memory=False)
+safety_df = pd.read_csv("안전사고_utf.csv", low_memory=False)
 
-# 역별 승하차인원           => total_df
-# 65세 노인 승하차인원      => senior_df
+
+# 역별 승하차인원           => total22_df, total24_df
+# 65세 노인 승하차인원      => senior22_df, senior24_df
 # 노인요양시설(요양원)      => senior_care_df
 # 종사자, 사업체 수         => sme_df
+# 안전사고                  => safety_df
 
 # ------------------
 # 확인용
-print(total_df.head())
-print(total_df.columns)
-print(senior_df.head())
-print(senior_df.columns)
+print(total22_df.head())
+print(total22_df.columns)
+print(senior22_df.head())
+print(senior22_df.columns)
+print(safety_df.head())
 print(senior_care_df.head())
 print(senior_care_df.columns)
 print(sme_df.head())
@@ -35,7 +41,7 @@ print(park_df.head())
 # ------------------
 
 
-# 2. [핵심] 역번호를 활용해 '호선' 컬럼 생성
+"""# 2. [핵심] 역번호를 활용해 '호선' 컬럼 생성
 # 서울교통공사 역번호 규칙을 반영하여 호선 정보를 만듭니다.
 def get_line_number(station_id):
     sid = str(station_id)
@@ -60,8 +66,8 @@ time_cols = [
 ]
 
 # 데이터 정제: 숫자형으로 변환 (NaN 또는 이상 값 0 처리)
-"""for col in time_cols:
-    senior_df[col] = pd.to_numeric(senior_df[col], errors='coerce').fillna(0)"""
+for col in time_cols:
+    senior_df[col] = pd.to_numeric(senior_df[col], errors='coerce').fillna(0)
 senior_df[time_cols] = senior_df[time_cols].apply(pd.to_numeric, errors='coerce').fillna(0) 
 # 데이터가 숫자형이 아닌 문자열로 되어 있을 가능성 때문에 안전상의 이유로 숫자형으로 변환, errors= coerce는 숫자열로 변환 불가 시 NaN으로 처리
                                                                                   # 그 후 fillna(0)을 통해 NaN의 값을 0으로 처리
@@ -107,4 +113,4 @@ for p in plt.gca().patches:
                        f'{int(height):,}', 
                        ha='center', va='bottom', fontsize=9)
 
-plt.show()
+plt.show()"""
