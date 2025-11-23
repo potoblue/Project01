@@ -12,9 +12,11 @@ plt.rcParams['axes.unicode_minus'] = False
 
 total22_df = pd.read_csv("전연령22_utf8.csv", low_memory=False)
 senior22_df = pd.read_csv("노인승하차22_utf8.csv", low_memory=False)
+total23_df = pd.read_csv("전연령23_utf8.csv", low_memory=False)
+senior23_df = pd.read_csv("노인승하차23_utf8.csv", low_memory=False)
 total24_df = pd.read_csv("전연령24_utf8.csv", low_memory=False)
 senior24_df = pd.read_csv("노인승하차24_utf8.csv", low_memory=False)
-senior_care_df = pd.read_csv("senior_care_utf8.csv", low_memory=False)
+# senior_care_df = pd.read_csv("senior_care_utf8.csv", low_memory=False)
 sme_df = pd.read_csv("sme.csv", low_memory=False)
 park_df = pd.read_csv("TB_PTP_PRK_M.csv", low_memory=False)
 safety_df = pd.read_csv("안전사고_utf.csv", low_memory=False)
@@ -28,16 +30,7 @@ safety_df = pd.read_csv("안전사고_utf.csv", low_memory=False)
 
 # ------------------
 # 확인용
-print(total22_df.head())
-print(total22_df.columns)
-print(senior22_df.head())
-print(senior22_df.columns)
-print(safety_df.head())
-print(senior_care_df.head())
-print(senior_care_df.columns)
-print(sme_df.head())
-print(sme_df.columns)
-print(park_df.head())
+print(total23_df.head())
 # ------------------
 
 
