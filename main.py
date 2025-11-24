@@ -20,7 +20,11 @@ senior24_df = pd.read_csv("노인승하차24_utf8.csv", low_memory=False)
 sme_df = pd.read_csv("sme.csv", low_memory=False)
 park_df = pd.read_csv("TB_PTP_PRK_M.csv", low_memory=False)
 safety_df = pd.read_csv("안전사고_utf.csv", low_memory=False)
+rain_df = pd.read_csv("rain20_25.csv", encoding='cp949', sep=None, engine="python")
+rain_df.to_csv("rain20_25_utf8.csv", encoding='utf-8-sig', index=False)
 
+weather_df = pd.read_csv("weather20_25.csv", encoding='cp949', sep=None, engine="python")
+weather_df.to_csv("weath20_25_utf8.csv", encoding='utf-8-sig', index=False)
 
 # 역별 승하차인원           => total22_df, total24_df
 # 65세 노인 승하차인원      => senior22_df, senior24_df
