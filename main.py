@@ -111,3 +111,67 @@ for p in plt.gca().patches:
                        ha='center', va='bottom', fontsize=9)
 
 plt.show()"""
+
+# --------------------
+
+group_columns = ['월','역번호','승하차구분', '역명']
+time_columns = [
+    '06시간대이전', '06-07시간대', '07-08시간대', '08-09시간대', '09-10시간대',
+    '10-11시간대', '11-12시간대', '12-13시간대', '13-14시간대', '14-15시간대',
+    '15-16시간대', '16-17시간대', '17-18시간대', '18-19시간대', '19-20시간대',
+    '20-21시간대', '21-22시간대', '22-23시간대', '23-24시간대', '24시간대이후'
+]
+
+#2022
+# 1. total_df에서 '승차'만 필터링할 때 .copy()를 사용하여 경고를 방지합니다.
+senior22_df_2022 = senior22_df.copy()
+senior22_df_2022.columns = senior22_df_2022.columns.str.strip()
+
+senior22_df_2022['수송일자'] = pd.to_datetime(senior22_df_2022['수송일자'])
+senior22_df_2022['수송일자'] = pd.to_datetime(senior22_df_2022['수송일자'])
+senior22_df_2022['월'] = senior22_df_2022['수송일자'].dt.month
+senior22_df_2022['월'] = senior22_df_2022['월'].ffill()
+monthly_totol_2022 = senior22_df_2022.groupby(group_columns)[time_columns].sum()
+tmp_senior22_df_2022 = monthly_totol_2022.loc[:,'06시간대이전' : '24시간대이후'].sum(axis=1)
+
+#인덱스들을 컬럼으로 다시 변환 
+reset_senior23_df_2022 = tmp_senior22_df_2022.reset_index(name = '승객수')
+#승차 하차 구분
+up_total_df_2022 = reset_senior23_df_2022[(reset_senior23_df_2022['승하차구분'] == '승차')].copy()
+dw_total_df_2022 = reset_senior23_df_2022[(reset_senior23_df_2022['승하차구분'] == '하차')].copy()
+
+#2023
+# 1. total_df에서 '승차'만 필터링할 때 .copy()를 사용하여 경고를 방지합니다.
+senior23_df_2023 = senior23_df.copy()
+senior23_df_2023.columns = senior23_df_2023.columns.str.strip()
+
+senior23_df_2023['수송일자'] = pd.to_datetime(senior23_df_2023['수송일자'])
+senior23_df_2023['수송일자'] = pd.to_datetime(senior23_df_2023['수송일자'])
+senior23_df_2023['월'] = senior23_df_2023['수송일자'].dt.month
+senior23_df_2023['월'] = senior23_df_2023['월'].ffill()
+monthly_totol_2023 = senior23_df_2023.groupby(group_columns)[time_columns].sum()
+tmp_senior23_df_2023 = monthly_totol_2023.loc[:,'06시간대이전' : '24시간대이후'].sum(axis=1)
+
+#인덱스들을 컬럼으로 다시 변환 
+reset_senior23_df_2023 = tmp_senior23_df_2023.reset_index(name = '승객수')
+#승차 하차 구분
+up_total_df_2023 = reset_senior23_df_2023[(reset_senior23_df_2023['승하차구분'] == '승차')].copy()
+dw_total_df_2023 = reset_senior23_df_2023[(reset_senior23_df_2023['승하차구분'] == '하차')].copy()
+
+#2022
+# 1. total_df에서 '승차'만 필터링할 때 .copy()를 사용하여 경고를 방지합니다.
+senior24_df_2024 = senior24_df.copy()
+senior24_df_2024.columns = senior24_df_2024.columns.str.strip() #값에 빈칸이 있는지 확인
+
+senior24_df_2024['수송일자'] = pd.to_datetime(senior24_df_2024['수송일자']) #수송일자 값을 date 로 변환
+senior24_df_2024['수송일자'] = pd.to_datetime(senior24_df_2024['수송일자'])
+senior24_df_2024['월'] = senior24_df_2024['수송일자'].dt.month #날짜를 date 값으로 변환하고 월만 저장
+senior24_df_2024['월'] = senior24_df_2024['월'].ffill() #컬럼에 해당되는 결측값을 값이 들어 있는 값까지 저장
+monthly_totol_2024 = senior24_df_2024.groupby(group_columns)[time_columns].sum()
+tmp_senior24_df_2024 = monthly_totol_2024.loc[:,'06시간대이전' : '24시간대이후'].sum(axis=1)
+
+#인덱스들을 컬럼으로 다시 변환 
+reset_senior24_df_2024 = tmp_senior24_df_2024.reset_index(name='승객수')
+#승차 하차 구분
+up_total_df_2024 = reset_senior24_df_2024[(reset_senior24_df_2024['승하차구분'] == '승차')].copy()
+dw_total_df_2024 = reset_senior24_df_2024[(reset_senior24_df_2024['승하차구분'] == '하차')].copy()
