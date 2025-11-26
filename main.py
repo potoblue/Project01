@@ -20,11 +20,11 @@ senior24_df = pd.read_csv("노인승하차24_utf8.csv", low_memory=False)
 sme_df = pd.read_csv("sme.csv", low_memory=False)
 park_df = pd.read_csv("TB_PTP_PRK_M.csv", low_memory=False)
 safety_df = pd.read_csv("안전사고_utf.csv", low_memory=False)
-rain_df = pd.read_csv("rain20_25.csv", encoding='cp949', sep=None, engine="python")
-rain_df.to_csv("rain20_25_utf8.csv", encoding='utf-8-sig', index=False)
+# rain_df = pd.read_csv("rain20_25.csv", encoding='cp949', sep=None, engine="python")
+# rain_df.to_csv("rain20_25_utf8.csv", encoding='utf-8-sig', index=False)
 
-weather_df = pd.read_csv("weather20_25.csv", encoding='cp949', sep=None, engine="python")
-weather_df.to_csv("weath20_25_utf8.csv", encoding='utf-8-sig', index=False)
+# weather_df = pd.read_csv("weather20_25.csv", encoding='cp949', sep=None, engine="python")
+# weather_df.to_csv("weath20_25_utf8.csv", encoding='utf-8-sig', index=False)
 
 # 역별 승하차인원           => total22_df, total24_df
 # 65세 노인 승하차인원      => senior22_df, senior24_df
@@ -175,3 +175,77 @@ reset_senior24_df_2024 = tmp_senior24_df_2024.reset_index(name='승객수')
 #승차 하차 구분
 up_total_df_2024 = reset_senior24_df_2024[(reset_senior24_df_2024['승하차구분'] == '승차')].copy()
 dw_total_df_2024 = reset_senior24_df_2024[(reset_senior24_df_2024['승하차구분'] == '하차')].copy()
+
+
+
+# 1. 한글 폰트 설정 (Windows: Malgun Gothic, Mac: AppleGothic, Colab: NanumBarunGothic)
+import platform
+system_name = platform.system()
+
+if system_name == 'Windows':
+    plt.rc('font', family='Malgun Gothic')
+elif system_name == 'Darwin': # Mac
+    plt.rc('font', family='AppleGothic')
+else: # Colab or Linux (나눔글꼴 설치 필요)
+    plt.rc('font', family='NanumBarunGothic')
+
+# 마이너스 기호 깨짐 방지
+plt.rcParams['axes.unicode_minus'] = False
+
+# 2. 시각화 함수 정의
+def draw_yearly_trend(year, up_df, dw_df):
+    # 월별 합계 집계
+    up_monthly = up_df.groupby('월')['승객수'].sum()
+    dw_monthly = dw_df.groupby('월')['승객수'].sum()
+    
+    # 그래프 그리기
+    plt.figure(figsize=(12, 6))
+    
+    # 승차 그래프 (빨간색 점선)
+    plt.plot(up_monthly.index, up_monthly.values, marker='o', linestyle='-', color='red', label='승차', linewidth=2)
+    
+    # 하차 그래프 (파란색 점선)
+    plt.plot(dw_monthly.index, dw_monthly.values, marker='s', linestyle='--', color='blue', label='하차', linewidth=2)
+    
+    # 제목 및 라벨 설정
+    plt.title(f'{year}년 월별 노인 지하철 승하차 인원 추이', fontsize=16)
+    plt.xlabel('월', fontsize=12)
+    plt.ylabel('승객 수 (명)', fontsize=12)
+    
+    # X축 눈금 설정 (1월 ~ 12월)
+    plt.xticks(range(1, 13))
+    
+    # 천 단위 콤마 포맷 (Y축)
+    current_values = plt.gca().get_yticks()
+    plt.gca().set_yticklabels(['{:,.0f}'.format(x) for x in current_values])
+    
+    # 범례 및 그리드
+    plt.legend(fontsize=12)
+    plt.grid(True, linestyle=':', alpha=0.6)
+    
+    plt.show()
+
+# -------------------------------------------------------
+# 3. 각 연도별 그래프 출력
+# -------------------------------------------------------
+
+# 2022년 시각화
+print("=== 2022년 그래프 ===")
+if not up_total_df_2022.empty and not dw_total_df_2022.empty:
+    draw_yearly_trend(2022, up_total_df_2022, dw_total_df_2022)
+else:
+    print("2022년 데이터가 비어있습니다.")
+
+# 2023년 시각화
+print("=== 2023년 그래프 ===")
+if not up_total_df_2023.empty and not dw_total_df_2023.empty:
+    draw_yearly_trend(2023, up_total_df_2023, dw_total_df_2023)
+else:
+    print("2023년 데이터가 비어있습니다.")
+
+# 2024년 시각화
+print("=== 2024년 그래프 ===")
+if not up_total_df_2024.empty and not dw_total_df_2024.empty:
+    draw_yearly_trend(2024, up_total_df_2024, dw_total_df_2024)
+else:
+    print("2024년 데이터가 비어있습니다.")
